@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  contosouniversity:
+    image: christianhxc/contosouniversity
+    build:
+      context: .
+      dockerfile: ContosoUniversity/Dockerfile
+    networks:
+      - contosouniversity-net
+    depends_on:
+      - database
+
+  database:
+    image: microsoft/mssql-server-linux:2017-CU3
+    container_name: contosouniversitydb
+    ports:
+      - 1433:1433
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_SA_PASSWORD: "<YourStrong!Passw0rd>"
+    networks:
+      - contosouniversity-net
+
+networks:
+  contosouniversity-net:
+    driver: bridge

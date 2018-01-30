@@ -1,0 +1,71 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+#region snippet_Usings
+using ContosoUniversity.Data;
+using Microsoft.EntityFrameworkCore;
+#endregion
+
+namespace ContosoUniversity
+{
+    public class Startup
+    {
+        public Startup(IConfiguration configuration)
+        {
+            Configuration = configuration;
+        }
+
+        public IConfiguration Configuration { get; }
+
+        // This method gets called by the runtime. Use this method to add services to the container.
+        #region snippet_SchoolContext
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddDbContext<SchoolContext>(options =>
+              options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")
+              .Replace("{{DB_ENDPOINT}}", Configuration.GetValue<string>("DB_ENDPOINT"))));
+            
+            var school = services.BuildServiceProvider().GetRequiredService<SchoolContext>();
+            if (Configuration.GetValue<bool>("DB_MIGRATE") == true)
+            {
+                school.Database.Migrate();
+            }
+
+            if (Configuration.GetValue<bool>("DB_INITIALIZE") == true)
+            {
+                DbInitializer.Initialize(school);
+            }
+
+            services.AddMvc();
+        }
+        #endregion
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Error");
+            }
+                        
+            app.UseStaticFiles();
+            
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller}/{action=Index}/{id?}");
+            });
+        }
+    }
+}

@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  contosouniversity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - DB_ENDPOINT=database
+      - DB_MIGRATE=true
+      - DB_INITIALIZE=true
+    ports:
+      - "80"

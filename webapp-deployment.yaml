@@ -1,0 +1,42 @@
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: contosouniversityweb
+spec:
+  replicas: 3
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5 
+  template:
+    metadata:
+      labels:
+        app: contosouniversityweb
+    spec:
+      containers:
+      - name: contosouniversityweb
+        image: christianhxc/contosouniversity:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            cpu: 250m
+          limits:
+            cpu: 500m
+        env:
+        - name: DB_ENDPOINT
+          value: "contosouniversitydb"
+        - name: DB_INITIALIZE
+          value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contosouniversityweb
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+  selector:
+    app: contosouniversityweb
