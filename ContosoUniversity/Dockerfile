@@ -4,11 +4,9 @@ EXPOSE 80
 
 FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
-COPY *.sln ./
-COPY ContosoUniversity/ContosoUniversity.csproj ContosoUniversity/
+COPY ContosoUniversity.csproj ./
 RUN dotnet restore
 COPY . .
-WORKDIR /src/ContosoUniversity
 RUN dotnet build -c Release -o /app
 
 FROM build AS publish
