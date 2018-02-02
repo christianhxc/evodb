@@ -6,8 +6,6 @@ services:
     build:
       context: .
       dockerfile: ContosoUniversity/Dockerfile
-    networks:
-      - contosouniversity-net
     depends_on:
       - database
 
@@ -19,9 +17,3 @@ services:
     environment:
       ACCEPT_EULA: "Y"
       MSSQL_SA_PASSWORD: "<YourStrong!Passw0rd>"
-    networks:
-      - contosouniversity-net
-
-networks:
-  contosouniversity-net:
-    driver: bridge

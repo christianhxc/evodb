@@ -14,11 +14,7 @@ docker push christianhxc/contosouniversity:1.0
 
 ## Create docker image with code to run migrations
 ```
-docker build -f .\ContosoUniversity\Dockerfile --target "build" -t christianhxc/contosouniversity:latest-build -t christianhxc/contosouniversity:1.0-build .\ContosoUniversity
-```
-
-```
-docker push christianhxc/contosouniversity:latest-build
+docker build -f .\ContosoUniversity\Dockerfile --target "build" -t christianhxc/contosouniversity:latest-build .\ContosoUniversity
 ```
 
 ```
