@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: contosouniversityweb
-        image: christianhxc/contosouniversity:1.1
+        image: christianhxc/contosouniversity:1.2
         ports:
         - containerPort: 80
         resources:
